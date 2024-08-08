@@ -15,4 +15,10 @@
     5. `npm install nodemon`
     6. `npx nodemon file_name.js`
 
+# Git Commands Used
+    1. `git init `
+    2. `git remote add origin https://github.com/Octothrop/FMS.git`
+    3. `git remote -v`
+    4. 
+
 
