@@ -23,5 +23,11 @@
 5. `git -m commit 'message'` 
 6. `git branch` : To check current branch
 7. `git push origin branch_name` 
+8. `git fetch origin` : Detects new branches
+9. `git checkout branch_name` : Changes current to branch_name
+10. `git merge other_branch` : merges two branch
+
+# Note :
+- Commit once any merge or changes made and push it to origin 
 
 
