@@ -8,17 +8,20 @@
 
 
 # Command Line Used 
-    1. `mkdir server` > `cd server`
-    2. `mkdir dir_name` > `cd dir_name`
-    3. `npm init -y` 
-    4. `npm install express cors mangoose dotenv` 
-    5. `npm install nodemon`
-    6. `npx nodemon file_name.js`
+1. `mkdir server` > `cd server`
+2. `mkdir dir_name` > `cd dir_name`
+3. `npm init -y` 
+4. `npm install express cors mangoose dotenv` 
+5. `npm install nodemon`
+6. `npx nodemon file_name.js`
 
 # Git Commands Used
-    1. `git init `
-    2. `git remote add origin https://github.com/Octothrop/FMS.git`
-    3. `git remote -v`
-    4. 
+1. `git init` : adds git to the current dir
+2. `git remote add origin https://github.com/Octothrop/FMS.git`
+3. `git remote -v` : To check if the orgin is added
+4. `git add ./*` : To add current file in the dir
+5. `git -m commit 'message'` 
+6. `git branch` : To check current branch
+7. `git push origin branch_name` 
 
 
