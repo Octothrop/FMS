@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Crop = require("../models.crop-commerce/crop");
 
-router.post("/sell/:userId", async (req, res) => {
+router.post("/sell/:sellerId", async (req, res) => {
   try {
     const {sellerId} = req.params;
     const {

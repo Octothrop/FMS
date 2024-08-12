@@ -11,7 +11,7 @@ const razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
-router.post("/sellCrop/:userId/:cropId", async (req, res) => {
+router.post("/buyCrop/:userId/:cropId", async (req, res) => {
   try {
     const { userId, cropId } = req.params;
     const {quantity } = req.body;

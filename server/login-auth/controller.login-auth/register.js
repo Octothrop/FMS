@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const router = express.Router();
-const userModel = require('../models/login-auth/user');
+const userModel = require('../models.login-auth/user');
 
 // Route to handle user registration
 router.post('/register', async (req, res) => {
@@ -15,7 +15,7 @@ router.post('/register', async (req, res) => {
     res.status(201).json({ message: "User registered successfully", user });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: "User exists" });
   }
 });
 
