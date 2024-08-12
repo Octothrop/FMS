@@ -19,7 +19,7 @@ In Mongoose schema validation, the `props` argument is an object provided to the
 1. `mkdir server` > `cd server`
 2. `mkdir dir_name` > `cd dir_name`
 3. `npm init -y` 
-4. `npm install express cors mangoose dotenv` 
+4. `npm install express cors mongoose dotenv` 
 5. `npm install nodemon`
 6. `npx nodemon file_name.js` : To run
 7. `node -e "console.log(require('crypto').randomBytes(64).toString('base64'));"` : For generating jwt_secret_key
@@ -37,6 +37,5 @@ In Mongoose schema validation, the `props` argument is an object provided to the
 10. `git merge other_branch` : merges two branch
 
 # Note :
-- Commit once any merge or changes made and push it to origin 
-
-
+- Commit once any merge or changes made and push it to origin
+- geospatial index is a specialized index that allows MongoDB to efficiently query and perform operations on geographic data - queries like finding documents within a certain radius or near a specific point
