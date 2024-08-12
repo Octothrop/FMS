@@ -13,11 +13,6 @@ const cropSchema = new Schema({
     type: Date,
     required: true
   },
-  plantingDate: {
-    type: Date,
-    required: true,
-    immutable: true
-  },
   quantity: {
     type: Number,
     required: true,
@@ -38,8 +33,12 @@ const cropSchema = new Schema({
   },
   status: {
     type: String,
-    enum: ["available", "sold", "pending"],
+    enum: ["available", "sold"],
     default: "available",
+  },
+  sell : {
+    type: Boolean,
+    default: false
   },
   location: {
     type: {
