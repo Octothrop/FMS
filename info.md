@@ -7,6 +7,7 @@
 6. **nodemon** automatically restarts when file changes in the directory
 7. **JWT** (JSON Web Token) secure, time-limited pass to prove your identity to a website and access it
 8. **Bcrypt** securely hashes passwords by adding extra steps (salt rounds)
+9. **Razor Pay** for payments
 
 # `props` Argument in Mongoose Schema Validation
 In Mongoose schema validation, the `props` argument is an object provided to the `message` function when a validation error occurs
@@ -23,6 +24,7 @@ In Mongoose schema validation, the `props` argument is an object provided to the
 5. `npm install nodemon`
 6. `npx nodemon file_name.js` : To run
 7. `node -e "console.log(require('crypto').randomBytes(64).toString('base64'));"` : For generating jwt_secret_key
+8. `npm install razorpay`
 
 # Git Commands Used
 1. `git init` : adds git to the current dir
