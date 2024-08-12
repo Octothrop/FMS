@@ -1,0 +1,4 @@
+> user : username, password, phonenumber
+> user_det : yet to be decides based on kyc requirement
+> login is verfied based on username and password > 2-step otp on registered phonenumber
+> register will add only part of data into user collection rest details into user_det for other payout or crop registry purposes

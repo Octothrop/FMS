@@ -5,6 +5,14 @@
 4. **Mongoose** Object Data Modeling (ODM) library for MongoDB and Node.js, providing a schema-based solution to model application data
 5. **dotenv** lightweight module that loads environment variables from a `.env` file into `process.env` for Node.js applications
 6. **nodemon** automatically restarts when file changes in the directory
+7. **JWT** (JSON Web Token) secure, time-limited pass to prove your identity to a website and access it
+8. **Bcrypt** securely hashes passwords by adding extra steps (salt rounds)
+
+# `props` Argument in Mongoose Schema Validation
+In Mongoose schema validation, the `props` argument is an object provided to the `message` function when a validation error occurs
+- `value`:The actual value of the field that failed validation
+- `path`:path (or name) of the field in the schema that failed validation
+- `reason` (Optional): reason for the validation failure, if available
 
 
 # Command Line Used 
@@ -13,7 +21,8 @@
 3. `npm init -y` 
 4. `npm install express cors mangoose dotenv` 
 5. `npm install nodemon`
-6. `npx nodemon file_name.js`
+6. `npx nodemon file_name.js` : To run
+7. `node -e "console.log(require('crypto').randomBytes(64).toString('base64'));"` : For generating jwt_secret_key
 
 # Git Commands Used
 1. `git init` : adds git to the current dir
