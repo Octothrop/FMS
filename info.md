@@ -8,6 +8,8 @@
 7. **JWT** (JSON Web Token) secure, time-limited pass to prove your identity to a website and access it
 8. **Bcrypt** securely hashes passwords by adding extra steps (salt rounds)
 9. **Razor Pay** for payments
+10. **Twilio** for otp generation
+11. **Axios** to post from one handler endpoint to another handler endpoint
 
 # `props` Argument in Mongoose Schema Validation
 In Mongoose schema validation, the `props` argument is an object provided to the `message` function when a validation error occurs
@@ -25,6 +27,8 @@ In Mongoose schema validation, the `props` argument is an object provided to the
 6. `npx nodemon file_name.js` : To run
 7. `node -e "console.log(require('crypto').randomBytes(64).toString('base64'));"` : For generating jwt_secret_key
 8. `npm install razorpay`
+9. `npm install twilio otp-generator`
+10. `npm install axios` : For async posts on other end points
 
 # Git Commands Used
 1. `git init` : adds git to the current dir
@@ -37,6 +41,10 @@ In Mongoose schema validation, the `props` argument is an object provided to the
 8. `git fetch origin` : Detects new branches
 9. `git checkout branch_name` : Changes current to branch_name
 10. `git merge other_branch` : merges two branch
+
+# Major Issues Faced:
+- Twilio : `RestException [Error]: 'To' number cannot be a Short Code: +91 96066XXXX`
+- OTP async request from register
 
 # Note :
 - Commit once any merge or changes made and push it to origin
