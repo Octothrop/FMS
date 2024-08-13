@@ -12,5 +12,3 @@ Move to the *login-auth* directory in serevr folder > `npx nodemon main.js`
 - Sell `http://localhost:5001/api/commerce/sell/:sellerId` *Replace sellerId*
 - Buy `http://localhost:5001/api/commerce/buy/:userId/:cropId` *Replace userId and cropId*
 - update crop `http://localhost:5001/api/commerce/updateCrop/:id` *Replace id with cropId*
-- send otp `http://localhost:5050/api/service/sendOtp/:username` *Replace userName*
-- verify otp `http://localhost:5050/api/service/verify/otp/:username` *Replace userName*
