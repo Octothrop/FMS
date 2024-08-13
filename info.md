@@ -9,7 +9,7 @@
 8. **Bcrypt** securely hashes passwords by adding extra steps (salt rounds)
 9. **Razor Pay** for payments
 10. **Twilio** for otp generation
-11. **Axios** to post from one handler endpoint to another handler endpointfetc
+11. **Axios** to post from one handler endpoint to another handler endpoint fetch
 
 # `props` Argument in Mongoose Schema Validation
 In Mongoose schema validation, the `props` argument is an object provided to the `message` function when a validation error occurs
