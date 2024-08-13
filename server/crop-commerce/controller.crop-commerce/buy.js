@@ -3,7 +3,7 @@ const crypto = require("crypto");
 const Razorpay = require("razorpay");
 const router = express.Router();
 const Crop = require("../models.crop-commerce/crop");
-const UserModel = require("../../login-auth/models.login-auth/user");
+const UserModel = require("../models.crop-commerce/user");
 const Transaction = require("../models.crop-commerce/transaction");
 
 const razorpay = new Razorpay({

@@ -1,5 +1,5 @@
 const express = require("express");
-const UserModel = require("./user");
+const UserModel = require("../models.helper-service/user");
 const router = express.Router();
 
 router.post("/verify/otp/:username", async (req, res) => {

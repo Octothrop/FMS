@@ -2,7 +2,7 @@ const twilio = require("twilio");
 const otpGenerator = require("otp-generator");
 const express = require('express');
 const router = express.Router();
-const UserModel = require("./user");
+const UserModel = require("../models.helper-service/user");
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
