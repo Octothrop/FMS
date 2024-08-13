@@ -1,3 +1,4 @@
+<<<<<<< HEAD
  kyc requirement
 > login is verfied based on username and password > 2-step otp on registered phonenumber
 > register will add only part of data into user collection rest details into user_det for other payout or crop registry purposes
@@ -6,3 +7,7 @@
 > get all crops based on seller
 > history of transaction
 > history of crops 
+=======
+kyc requirement
+> login is verfied based on username and password > 2-step otp on registered phonenumber
+>>>>>>> d4ec850fbed7d81e25d5d5a883d87b56867496cd
