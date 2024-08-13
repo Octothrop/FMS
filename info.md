@@ -10,6 +10,7 @@
 9. **Razor Pay** for payments
 10. **Twilio** for otp generation
 11. **Axios** to post from one handler endpoint to another handler endpoint fetch
+12. **Weather API** to get weather information based on lan and lat
 
 # `props` Argument in Mongoose Schema Validation
 In Mongoose schema validation, the `props` argument is an object provided to the `message` function when a validation error occurs

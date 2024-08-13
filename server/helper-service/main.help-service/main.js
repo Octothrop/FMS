@@ -19,9 +19,11 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
 
 const otpVerifyRoutes = require('../controller.helper-service/verifyOtp');
 const sendOtpRoutes = require("../controller.helper-service/sendOtp");
+const weatherRoutes = require("../controller.helper-service/weatherService");
 
 app.use('/api/service', otpVerifyRoutes);
 app.use('/api/service', sendOtpRoutes);
+app.use('/api/service', weatherRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running at port: ${port}`);
