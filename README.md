@@ -14,4 +14,4 @@ Move to the *login-auth* directory in serevr folder > `npx nodemon main.js`
 - update crop `http://localhost:5001/api/commerce/updateCrop/:id` *Replace id with cropId*
 - send otp `http://localhost:5050/api/service/sendOtp/:username` *Replace userName*
 - verify otp `http://localhost:5050/api/service/verify/otp/:username` *Replace userName*
-- weather `http://localhost:5050/api/service/weather`
+- weather `http://localhost:5050/api/service/weather` .
