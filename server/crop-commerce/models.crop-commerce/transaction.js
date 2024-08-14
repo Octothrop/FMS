@@ -17,8 +17,7 @@ const transactionSchema = new Schema({
     required: true,
   },
   paymentId: {
-    type: String,
-    required: true,
+    type: String
   },
   orderId: {
     type: String,

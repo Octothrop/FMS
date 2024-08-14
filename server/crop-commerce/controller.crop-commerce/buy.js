@@ -14,7 +14,7 @@ const razorpay = new Razorpay({
 router.post("/buyCrop/:userId/:cropId", async (req, res) => {
   try {
     const { userId, cropId } = req.params;
-    const {quantity } = req.body;
+    const { quantity } = req.body;
     const crop = await Crop.findById(cropId);
     if (!crop) {
       return res.status(404).json({ error: "Crop not found" });
@@ -24,7 +24,11 @@ router.post("/buyCrop/:userId/:cropId", async (req, res) => {
       return res.status(400).json({ error: "Insufficient crop quantity" });
     }
 
-    const user = UserModel.findById(userId);
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
     if (user.role === "agent" && !cropId) {
       const { name, variety, harvestDate, unit, pricePerUnit, location } =
         crop.toObject();
@@ -54,6 +58,18 @@ router.post("/buyCrop/:userId/:cropId", async (req, res) => {
     };
 
     const order = await razorpay.orders.create(options);
+
+    // Save the transaction
+    const transaction = new Transaction({
+      userId: userId,
+      cropId: cropId,
+      amount: amount / 100,
+      orderId: order.id,
+      status: "pending",
+      razorpayCreatedAt: new Date(order.created_at * 1000),
+    });
+
+    await transaction.save();
 
     res.status(201).json({
       message: "Order created successfully",
