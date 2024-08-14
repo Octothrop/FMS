@@ -8,6 +8,15 @@ const cropSchema = new Schema({
   },
   variety: {
     type: String,
+    enum: ["regular", "dwarf", "special"]
+  },
+  category: {
+    type: String,
+    enum: ["vegetable", "fruit"]
+  },
+  label:{
+    type: String,
+    enum: ["local", "non-local"]
   },
   harvestDate: {
     type: Date,
