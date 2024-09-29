@@ -14,7 +14,7 @@ export default function Header() {
         <div className="links">
           | <Link className="link" to="/"> Home </Link> |
           <Link className="link" to="/"> Explore </Link> |
-          <Link className="link" to="/"> Login/Register </Link> |
+          <Link className="link" to="/login"> Login/Register </Link> |
           <div className="language-switcher">
             <LanguageSwitcher />
           </div>

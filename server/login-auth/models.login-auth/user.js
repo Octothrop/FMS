@@ -39,7 +39,7 @@ const userSchema = new Schema({
   },
   otpVerified: {
     type: Boolean,
-    default: false
+    default: true
   }
 });
 

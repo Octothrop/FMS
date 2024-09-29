@@ -16,7 +16,7 @@ router.post("/register", async (req, res) => {
       phoneNumber
     });
     await user.save();
-    await axios.put(`http://localhost:5050/api/service/sendOtp/${username}`);
+    // await axios.put(`http://localhost:5050/api/service/sendOtp/${username}`);
     res.status(201).json({ message: "User registered successfully", user });
   } catch (error) {
     console.log(error);

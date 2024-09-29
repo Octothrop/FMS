@@ -2,42 +2,67 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const transactionSchema = new Schema({
-  userId: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
+  transactionId: {
+    type: Number,
     required: true,
+    unique: true,
   },
-  cropId: {
+  orderId: {
     type: Schema.Types.ObjectId,
-    ref: "Crop",
-    required: true,
+    ref: "Order",
+    required: true
   },
   amount: {
     type: Number,
     required: true,
   },
-  paymentId: {
-    type: String
+  fromAccountId: {
+    type: Number,
+    required: true,
   },
-  orderId: {
+  toAccountId: {
+    type: Number,
+    required: true,
+  },
+  mode: {
     type: String,
+    enum: ["NEFT", "IMPS", "RTGS", "UPI"],
+    required: true,
+  },
+  cardId: {
+    type: Number,
+    default: null,
+  },
+  time: {
+    type: Date,
     required: true,
   },
   status: {
     type: String,
-    enum: ["pending", "completed", "failed"],
-    default: "pending",
-  },
-  razorpayCreatedAt: {
-    type: Date,
+    enum: ["PENDING", "COMPLETED", "FAILED"],
     required: true,
+  },
+  remark: {
+    type: String,
+    default: "",
   },
   createdAt: {
     type: Date,
     default: Date.now,
     immutable: true,
   },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
+// save -> runs for save + update
+transactionSchema.pre("save", function (next) {
+  this.updatedAt = Date.now();
+  next();
 });
 
 const Transaction = mongoose.model("Transaction", transactionSchema);
+
 module.exports = Transaction;

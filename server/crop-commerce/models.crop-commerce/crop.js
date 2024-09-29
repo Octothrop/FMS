@@ -8,15 +8,18 @@ const cropSchema = new Schema({
   },
   variety: {
     type: String,
-    enum: ["regular", "dwarf", "special"]
+    enum: ["regular", "dwarf", "special"],
+    required: true
   },
   category: {
     type: String,
-    enum: ["vegetable", "fruit"]
+    enum: ["vegetable", "fruit"],
+    required: true
   },
   label:{
     type: String,
-    enum: ["local", "non-local"]
+    enum: ["local", "non-local"],
+    required: true
   },
   harvestDate: {
     type: Date,
@@ -68,7 +71,7 @@ const cropSchema = new Schema({
   updatedAt: {
     type: Date,
     default: Date.now,
-  },
+  }
 });
 
 // save -> runs for save + update

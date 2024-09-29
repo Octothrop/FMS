@@ -1,0 +1,78 @@
+.crops-main {
+  font-family: "Arial", sans-serif;
+  width: 100%;
+  margin: 3px auto;
+  overflow: hidden;
+}
+.crops-main table {
+  width: 80%;
+  border-collapse: collapse;
+  margin: 0 auto;
+}
+
+.manage-crops {
+  min-height: 60vh;
+  height: 100%;
+}
+
+.crops-main table th,
+td {
+  padding: 10px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.crops-main table th {
+  background-color: #2c3e50;
+  color: #fff;
+}
+
+.on-sale {
+  color: #27ae60;
+  background-color: #9bdec6a1;
+}
+
+.sold {
+  color: #c0392b;
+}
+
+.out-of-stock {
+  color: #e67e22;
+}
+.crops-main button{
+ height: 35px;
+ margin-left: 15px;
+ border-color: transparent;
+}
+
+.crops-main button:hover {
+  transform: scale(1.1);
+}
+
+.update {
+background-color: #549d84a1;
+  padding: 10px;
+  color: white
+}
+
+.no-data {
+  margin: 10px;
+  height: 400px;
+}
+
+.editing {
+  height: 50px;
+}
+
+.editing input,
+.editing select {
+  width: 100px;
+  height: 30px;
+}
+
+.editing button {
+  width: 50px;
+  height: 30px;
+  font-size: 12px;
+  padding: 0 5px;
+}

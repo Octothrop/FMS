@@ -1,0 +1,105 @@
+* {
+  font-family: "Courier New", Courier, monospace, "Yu Gothic", "Noto Sans JP";
+}
+
+.register-main {
+  display: flex;
+  flex-direction: row;
+}
+span {
+  font-weight: normal;
+  font-size: 60px;
+}
+
+.register-container {
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  margin: 30px auto;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.871);
+}
+
+.register-input {
+  padding: 5px;
+  margin: 2px;
+  border-radius: 2px;
+}
+
+.register-input:hover {
+  border-radius: 5px;
+  background-color: rgba(188, 222, 239, 0.667);
+}
+
+.submit-button {
+  background-color: rgb(212, 63, 112);
+  width: 100px;
+  padding: 10px;
+  align-self: center;
+  border-radius: 20px;
+  border-color: transparent;
+  color: white
+}
+
+.submit-button:hover {
+  border-radius: 30px;
+  background-color: rgb(157, 81, 107);
+  transform: scale(1.08);
+}
+
+.go-to-login{
+margin-top:10px;
+font-size: 13px;
+white-space: nowrap;
+}
+
+.link{
+font-size: 13px;
+color:rgb(163, 44, 96);
+}
+
+.link:hover {
+  font-weight: bold;
+}
+
+.error-message,
+.success-message {
+  font-size: 0.8rem;
+}
+.otp-container {
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  margin: 30px auto;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.871);
+}
+
+.otp-input {
+  padding: 5px;
+  margin: 2px;
+  border-radius: 2px;
+}
+
+.otp-input:hover {
+  border-radius: 5px;
+  background-color: rgba(188, 222, 239, 0.667);
+}
+
+.verify-button {
+  background-color: rgb(63, 157, 112);
+  width: 100px;
+  padding: 10px;
+  align-self: center;
+  border-radius: 20px;
+  border-color: transparent;
+  color: white;
+}
+
+.verify-button:hover {
+  border-radius: 30px;
+  background-color: rgb(57, 120, 107);
+  transform: scale(1.08);
+}
