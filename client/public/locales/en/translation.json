@@ -1,0 +1,92 @@
+{
+  "welcome": "Welcome to our website!",
+  "description": "This is a simple multi-language React app.",
+  "homeTitle": "Home Page",
+  "homeDescription": "This is the home page of our multi-language application.",
+  "marquee-text": "🌾 Buy and Sell Your Fresh Crops Now! 🚜 | 🌱 Seeking Investment? Connect with Investors Today! 💼 | 🍅 Join a Growing Community of Farmers! 👩‍🌾 | 🌻 Get the Best Deals on Seeds, Equipment, and More! 🌽",
+  "section-1-text": "Nurturing Growth, From Seed to Sale",
+  "testimonials": [
+    {
+      "name": "Rahul Sharma",
+      "text": "Nurturing growth, from seed to sale",
+      "image": "https://randomuser.me/api/portraits/men/1.jpg"
+    },
+    {
+      "name": "Priya Desai",
+      "text": "Best support for all my farming needs",
+      "image": "https://randomuser.me/api/portraits/women/2.jpg"
+    },
+    {
+      "name": "Anil Kumar",
+      "text": "Their guidance helped me double my yield",
+      "image": "https://randomuser.me/api/portraits/men/3.jpg"
+    },
+    {
+      "name": "Sneha Reddy",
+      "text": "A great platform to connect with fellow farmers",
+      "image": "https://randomuser.me/api/portraits/women/4.jpg"
+    },
+    {
+      "name": "Arjun Yadav",
+      "text": "The best marketplace for selling my crops",
+      "image": "https://randomuser.me/api/portraits/men/5.jpg"
+    },
+    {
+      "name": "Deepa Nair",
+      "text": "Fantastic service, highly recommended",
+      "image": "https://randomuser.me/api/portraits/women/6.jpg"
+    },
+    {
+      "name": "Kiran Patel",
+      "text": "Excellent advice on crop management",
+      "image": "https://randomuser.me/api/portraits/men/7.jpg"
+    },
+    {
+      "name": "Meera Singh",
+      "text": "I found great investment opportunities here",
+      "image": "https://randomuser.me/api/portraits/women/8.jpg"
+    },
+    {
+      "name": "Rajesh Gupta",
+      "text": "The community support is invaluable",
+      "image": "https://randomuser.me/api/portraits/men/9.jpg"
+    },
+    {
+      "name": "Lakshmi Rao",
+      "text": "Their resources helped me start my own farm",
+      "image": "https://randomuser.me/api/portraits/women/10.jpg"
+    },
+    {
+      "name": "Vikram Singh",
+      "text": "A one-stop solution for farmers",
+      "image": "https://randomuser.me/api/portraits/men/11.jpg"
+    },
+    {
+      "name": "Pooja Iyer",
+      "text": "Their platform is user-friendly and informative",
+      "image": "https://randomuser.me/api/portraits/women/12.jpg"
+    }
+  ],
+  "feature": {
+    "buySellCrops": {
+      "title": "Buy and Sell Crops",
+      "description": "A platform for farmers to easily buy and sell crops directly",
+      "image": "https://img.freepik.com/free-photo/photorealistic-woman-organic-sustainable-garden-harvesting-produce_23-2151462917.jpg"
+    },
+    "supportBot": {
+      "title": "Support Bot",
+      "description": "Get instant answers to your farming queries with our support bot",
+      "image": "https://img.freepik.com/free-photo/woman-hanging-out-with-robot_23-2151112148.jpg"
+    },
+    "funding": {
+      "title": "Funding Opportunities",
+      "description": "Explore various funding options available for farmers",
+      "image": "https://img.freepik.com/free-photo/photorealistic-money-with-plant_23-2151027561.jpg"
+    },
+    "management": {
+      "title": "Farm Management",
+      "description": "Tools and resources for effective farm management",
+      "image": "https://img.freepik.com/free-photo/medium-shot-girl-holding-tablet_23-2148617240.jpg"
+    }
+  }
+}

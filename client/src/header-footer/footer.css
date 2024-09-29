@@ -1,0 +1,41 @@
+* {
+  font-family: "Courier New", Courier, monospace;
+  margin: 0px;
+}
+
+.blue-container {
+  height: 5px;
+  background-color: #549d84a1;
+}
+.footer {
+  background-color: #f8f9fa;
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 35px;
+  padding-right: 60px;
+}
+
+.footer-links a {
+  margin: 4px 15px;
+  text-decoration: none;
+  color: rgb(15, 61, 189);
+  display: flex;
+  align-items: flex-end;
+}
+
+.footer-links a:hover {
+  color: rgb(136, 158, 177);
+}
+
+.footer p {
+  font-size: 100px;
+}
+
+.links {
+  display: flex;
+  direction: row;
+  display: space-between;
+}
