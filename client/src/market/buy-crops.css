@@ -1,0 +1,100 @@
+.buy-crops-main {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.buy-crops {
+  flex: 1;
+  min-height: 60vh;
+  width: 100%;
+  margin: 3px auto;
+  overflow: hidden;
+  margin-top: 20px;
+}
+
+.buy-crops table {
+  width: 80%;
+  border-collapse: collapse;
+  margin: 0 auto;
+}
+
+.filter-section {
+  margin-left: 13%;
+  margin-bottom: 20px;
+  padding-left: 10px;
+}
+
+.filter-section input{
+    width: 1000px;
+    height: 25px;
+}
+
+.filter-btn{
+    padding: 10px;
+    background-color: #2c3e50;
+    color: white;
+}
+.buy-crops table th,
+td {
+  padding: 10px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.buy-crops table th {
+  background-color: #2c3e50;
+  color: #fff;
+}
+
+.on-sale {
+  width: 100px;
+  color: #27ae60;
+  background-color: #9bdec6a1;
+}
+
+.sold {
+  color: #c0392b;
+}
+
+.out-of-stock {
+  color: #e67e22;
+}
+
+.buy-crops button {
+  height: 35px;
+  margin-left: 15px;
+  border-color: transparent;
+}
+
+.buy-crops button:hover {
+  transform: scale(1.1);
+}
+
+.update {
+  background-color: #549d84a1;
+  padding: 10px;
+  color: white;
+}
+
+.no-data {
+  margin: 10px;
+  height: 400px;
+}
+
+.editing {
+  height: 50px;
+}
+
+.editing input,
+.editing select {
+  width: 100px;
+  height: 30px;
+}
+
+.editing button {
+  width: 50px;
+  height: 30px;
+  font-size: 12px;
+  padding: 0 5px;
+}

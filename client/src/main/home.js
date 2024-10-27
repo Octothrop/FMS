@@ -1,12 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Header from "../header-footer/header";
 import Footer from "../header-footer/footer";
 import "./home.css";
 import TestimonialsSlider from "./slider";
+import { useParams } from "react-router-dom";
+import FarmerHeader from "../header-footer/farmer-header";
+import UserHeader from "../header-footer/user_header";
 
 const Home = () => {
   const { t } = useTranslation();
+  const [role, setRole] = useState("no-user");
+  const { userId } = useParams();
+
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      if (userId) {
+        try {
+          const response = await fetch(
+            `http://localhost:5001/api/commerce/userRole/${userId}`
+          );
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          const user = await response.json();
+          setRole(user.Role);
+        } catch (error) {
+          console.error("Error fetching user role:", error);
+        }
+      }
+    };
+
+    fetchUserRole();
+  }, [userId]);
 
   const features = [
     {
@@ -33,7 +59,14 @@ const Home = () => {
 
   return (
     <div className="Home">
-      <Header />
+      {role === "farmer" ? (
+        <FarmerHeader />
+      ) : role === "buyer" ? (
+        <UserHeader />
+      ) : (
+        <Header />
+      )}
+
       <div className="home-main">
         <div className="section-1">
           <div className="image-container">

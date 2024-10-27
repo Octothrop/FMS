@@ -10,6 +10,8 @@ export default function RegisterComponent() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [role, setRole] = useState("farmer");
+  const [ginkouAcc, setGinkouAccount] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -36,6 +38,8 @@ export default function RegisterComponent() {
             username: userName,
             password,
             phoneNumber,
+            role,
+            GinkouAcc: parseInt(ginkouAcc, 10),
           }),
         });
 
@@ -85,6 +89,29 @@ export default function RegisterComponent() {
             placeholder={t("phone_placeholder")}
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
+            required
+          />
+          <br />
+          <label htmlFor="role">{t("role_label")}</label>
+          <select
+            id="role"
+            className="register-input"
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+          >
+            <option value="farmer">{t("role_farmer")}</option>
+            <option value="buyer">{t("role_buyer")}</option>
+            <option value="admin">{t("role_admin")}</option>
+          </select>
+          <br />
+          <label htmlFor="ginkouAcc">{t("ginkou_acc")}</label>
+          <input
+            type="number"
+            id="ginkouAcc"
+            className="register-input"
+            placeholder="XXXXXXXXX01"
+            value={ginkouAcc}
+            onChange={(e) => setGinkouAccount(e.target.value)}
             required
           />
           <br />

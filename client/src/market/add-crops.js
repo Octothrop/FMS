@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import "./add-crops.css";
-import Header from "../header-footer/header";
 import Footer from "../header-footer/footer";
+import FarmerHeader from "../header-footer/farmer-header";
 
 export default function AddCrop() {
   const { userId } = useParams();
@@ -20,6 +20,24 @@ export default function AddCrop() {
   const [locationSet, setLocationSet] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+
+  const vegetableOptions = [
+    "Tomato",
+    "Brinjal",
+    "Onion",
+    "Potato",
+    "Cabbage",
+    "Cauliflower",
+    "Carrot",
+    "Spinach",
+    "Green Beans",
+    "Radish",
+    "Cucumber",
+    "Capsicum",
+    "Bitter Gourd",
+    "Pumpkin",
+    "Bottle Gourd"
+  ];
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -46,18 +64,7 @@ export default function AddCrop() {
           }),
         }
       );
-      console.log(
-        name,
-        variety,
-        category,
-        label,
-        harvestDate,
-        quantity,
-        unit,
-        pricePerUnit,
-        location,
-        userId
-      );
+
       if (!response.ok) {
         setError(true);
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -94,17 +101,24 @@ export default function AddCrop() {
 
   return (
     <div className="addCrop-main">
-      <Header />
+      <FarmerHeader />
       {!success && (
         <form onSubmit={handleSubmit} className="add-crop-form">
-          <input
-            type="text"
-            placeholder={t("form.name")}
+          <select
             value={name}
             onChange={(event) => setName(event.target.value)}
             className="form-input"
             required
-          />
+          >
+            <option value="" disabled>
+              {t("form.selectVegetable")}
+            </option>
+            {vegetableOptions.map((vegetable, index) => (
+              <option key={index} value={vegetable}>
+                {t(vegetable)}
+              </option>
+            ))}
+          </select>
           <select
             value={variety}
             onChange={(event) => setVariety(event.target.value)}
@@ -198,7 +212,6 @@ export default function AddCrop() {
           </button>
         </div>
       )}
-
       <Footer />
     </div>
   );

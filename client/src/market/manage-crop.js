@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import Header from "../header-footer/header";
 import Footer from "../header-footer/footer";
 import "./manage-crops.css";
+import FarmerHeader from "../header-footer/farmer-header";
 
 export default function CropList() {
   const { userId } = useParams();
   const { t } = useTranslation();
   const [crops, setCrops] = useState([]);
   const [editingCropId, setEditingCropId] = useState(null);
+  const [editedCrop, setEditedCrop] = useState({});
 
   useEffect(() => {
     fetch(`http://localhost:5001/api/commerce/getallcrops/${userId}`)
@@ -19,6 +20,9 @@ export default function CropList() {
   }, [userId]);
 
   const handleSell = async (cropId) => {
+    const confirmation = window.confirm(t("add_crop_sale"));
+    if (!confirmation) return;
+
     try {
       const response = await fetch(
         `http://localhost:5001/api/commerce/updateCrop/${cropId}`,
@@ -28,7 +32,7 @@ export default function CropList() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            status: "sold",
+            status: "available",
             sell: true,
           }),
         }
@@ -39,7 +43,6 @@ export default function CropList() {
       }
 
       const data = await response.json();
-      console.log(data.message);
       setCrops(crops.map((crop) => (crop._id === cropId ? data.crop : crop)));
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
@@ -48,9 +51,11 @@ export default function CropList() {
 
   const handleEdit = (cropId) => {
     setEditingCropId(cropId);
+    const crop = crops.find((c) => c._id === cropId);
+    setEditedCrop(crop);
   };
 
-  const handleSave = async (cropId, updatedCrop) => {
+  const handleSave = async (cropId) => {
     try {
       const response = await fetch(
         `http://localhost:5001/api/commerce/updateCrop/${cropId}`,
@@ -59,7 +64,7 @@ export default function CropList() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(updatedCrop),
+          body: JSON.stringify(editedCrop),
         }
       );
 
@@ -68,7 +73,6 @@ export default function CropList() {
       }
 
       const data = await response.json();
-      console.log(data.message);
       setCrops(crops.map((crop) => (crop._id === cropId ? data.crop : crop)));
       setEditingCropId(null);
     } catch (error) {
@@ -76,9 +80,65 @@ export default function CropList() {
     }
   };
 
+  const handleStopSale = async (cropId) => {
+    const confirmation = window.confirm(t("remove_crop_sale"));
+    if (!confirmation) return;
+
+    try {
+      const response = await fetch(
+        `http://localhost:5001/api/commerce/updateCrop/${cropId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            sell: false,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setCrops(crops.map((crop) => (crop._id === cropId ? data.crop : crop)));
+    } catch (error) {
+      console.error("There was a problem with the fetch operation:", error);
+    }
+  };
+
+  const handleDelete = async (cropId) => {
+    const confirmation = window.confirm(t("deletion_irreversible"));
+    if (!confirmation) return;
+
+    try {
+      const response = await fetch(
+        `http://localhost:5001/api/commerce/delete/${cropId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // Update the crops state to remove the deleted crop
+      setCrops(crops.filter((crop) => crop._id !== cropId));
+    } catch (error) {
+      console.error("There was a problem with the fetch operation:", error);
+    }
+  };
+
+  const handleChange = (field, value) => {
+    setEditedCrop({ ...editedCrop, [field]: value });
+  };
+
   return (
     <div className="crops-main">
-      <Header />
+      <FarmerHeader />
       <div className="manage-crops">
         <table className={editingCropId ? "editing" : ""}>
           <thead>
@@ -95,208 +155,171 @@ export default function CropList() {
             </tr>
           </thead>
           <tbody>
-            {crops.map((crop) => (
-              <tr key={crop._id}>
-                <td>
-                  {editingCropId === crop._id ? (
-                    <input
-                      type="text"
-                      value={crop.name}
-                      onChange={(e) =>
-                        setCrops(
-                          crops.map((c) =>
-                            c._id === crop._id
-                              ? { ...c, name: e.target.value }
-                              : c
-                          )
-                        )
-                      }
-                    />
-                  ) : (
-                    crop.name
-                  )}
-                </td>
-                <td>
-                  {editingCropId === crop._id ? (
-                    <input
-                      type="text"
-                      value={crop.variety}
-                      onChange={(e) =>
-                        setCrops(
-                          crops.map((c) =>
-                            c._id === crop._id
-                              ? { ...c, variety: e.target.value }
-                              : c
-                          )
-                        )
-                      }
-                    />
-                  ) : (
-                    crop.variety
-                  )}
-                </td>
-                <td>
-                  {editingCropId === crop._id ? (
-                    <input
-                      type="text"
-                      value={crop.category}
-                      onChange={(e) =>
-                        setCrops(
-                          crops.map((c) =>
-                            c._id === crop._id
-                              ? { ...c, category: e.target.value }
-                              : c
-                          )
-                        )
-                      }
-                    />
-                  ) : (
-                    crop.category
-                  )}
-                </td>
-                <td>
-                  {editingCropId === crop._id ? (
-                    <input
-                      type="text"
-                      value={crop.label}
-                      onChange={(e) =>
-                        setCrops(
-                          crops.map((c) =>
-                            c._id === crop._id
-                              ? { ...c, label: e.target.value }
-                              : c
-                          )
-                        )
-                      }
-                    />
-                  ) : (
-                    crop.label
-                  )}
-                </td>
-                <td>
-                  {editingCropId === crop._id ? (
-                    <input
-                      type="date"
-                      value={crop.harvestDate}
-                      onChange={(e) =>
-                        setCrops(
-                          crops.map((c) =>
-                            c._id === crop._id
-                              ? { ...c, harvestDate: e.target.value }
-                              : c
-                          )
-                        )
-                      }
-                    />
-                  ) : (
-                    new Date(crop.harvestDate).toLocaleDateString()
-                  )}
-                </td>
-                <td>
-                  {editingCropId === crop._id ? (
-                    <input
-                      type="number"
-                      value={crop.quantity}
-                      onChange={(e) =>
-                        setCrops(
-                          crops.map((c) =>
-                            c._id === crop._id
-                              ? { ...c, quantity: e.target.value }
-                              : c
-                          )
-                        )
-                      }
-                    />
-                  ) : (
-                    crop.quantity
-                  )}
-                </td>
-                <td>
-                  {editingCropId === crop._id ? (
-                    <input
-                      type="text"
-                      value={crop.unit}
-                      onChange={(e) =>
-                        setCrops(
-                          crops.map((c) =>
-                            c._id === crop._id
-                              ? { ...c, unit: e.target.value }
-                              : c
-                          )
-                        )
-                      }
-                    />
-                  ) : (
-                    crop.unit
-                  )}
-                </td>
-                <td>
-                  {editingCropId === crop._id ? (
-                    <input
-                      type="number"
-                      value={crop.pricePerUnit}
-                      onChange={(e) =>
-                        setCrops(
-                          crops.map((c) =>
-                            c._id === crop._id
-                              ? { ...c, pricePerUnit: e.target.value }
-                              : c
-                          )
-                        )
-                      }
-                    />
-                  ) : (
-                    crop.pricePerUnit
-                  )}
-                </td>
-                <td>
-                  {editingCropId === crop._id ? (
-                    <button
-                      onClick={() =>
-                        handleSave(
-                          crop._id,
-                          crops.find((c) => c._id === crop._id)
-                        )
-                      }
-                    >
-                      {t("table.save")}
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => handleEdit(crop._id)}
-                      className="update"
-                    >
-                      {t("table.update")}
-                    </button>
-                  )}
-                  {editingCropId === crop._id ? (
-                    <></>
-                  ) : crop.status === "sold" ? (
-                    crop.quantity > 0 ? (
-                      <button disabled className="on-sale">
-                        {t("table.onSale")}
-                      </button>
+            {crops.map((crop) => {
+              const isOutOfStock = crop.quantity - crop.soldQty <= 0;
+              const isPossible =
+                new Date(crop.harvestDate) <
+                new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+
+              return (
+                <tr key={crop._id}>
+                  <td>
+                    {editingCropId === crop._id ? (
+                      <input
+                        type="text"
+                        value={editedCrop.name || ""}
+                        onChange={(e) => handleChange("name", e.target.value)}
+                        disabled
+                      />
                     ) : (
-                      <button disabled className="sold">
-                        {t("table.sold")}
-                      </button>
-                    )
-                  ) : crop.quantity > 0 ? (
-                    <button
-                      disabled
-                      onClick={() => handleSell(crop._id)}
-                      className="on-sale"
-                    >
-                      {t("table.onSale")}
-                    </button>
-                  ) : (
-                    <button disabled className="out-of-stock">
-                      {t("table.outOfStock")}
-                    </button>
-                  )}
-                </td>
-              </tr>
-            ))}
+                      crop.name
+                    )}
+                  </td>
+                  <td>
+                    {editingCropId === crop._id ? (
+                      <input
+                        type="text"
+                        value={editedCrop.variety || ""}
+                        onChange={(e) =>
+                          handleChange("variety", e.target.value)
+                        }
+                        disabled
+                      />
+                    ) : (
+                      crop.variety
+                    )}
+                  </td>
+                  <td>
+                    {editingCropId === crop._id ? (
+                      <input
+                        type="text"
+                        value={editedCrop.category || ""}
+                        onChange={(e) =>
+                          handleChange("category", e.target.value)
+                        }
+                        disabled
+                      />
+                    ) : (
+                      crop.category
+                    )}
+                  </td>
+                  <td>
+                    {editingCropId === crop._id ? (
+                      <input
+                        type="text"
+                        value={editedCrop.label || ""}
+                        onChange={(e) => handleChange("label", e.target.value)}
+                        disabled
+                      />
+                    ) : (
+                      crop.label
+                    )}
+                  </td>
+                  <td>
+                    {editingCropId === crop._id ? (
+                      <input
+                        type="date"
+                        value={editedCrop.harvestDate || ""}
+                        onChange={(e) =>
+                          handleChange("harvestDate", e.target.value)
+                        }
+                      />
+                    ) : (
+                      new Date(crop.harvestDate).toLocaleDateString()
+                    )}
+                  </td>
+                  <td>
+                    {editingCropId === crop._id ? (
+                      <input
+                        type="number"
+                        value={editedCrop.quantity || ""}
+                        onChange={(e) =>
+                          handleChange("quantity", e.target.value)
+                        }
+                      />
+                    ) : (
+                      crop.quantity
+                    )}
+                  </td>
+                  <td>
+                    {editingCropId === crop._id ? (
+                      <input
+                        type="text"
+                        value={editedCrop.unit || ""}
+                        onChange={(e) => handleChange("unit", e.target.value)}
+                        disabled
+                      />
+                    ) : (
+                      crop.unit
+                    )}
+                  </td>
+                  <td>
+                    {editingCropId === crop._id ? (
+                      <input
+                        type="number"
+                        value={editedCrop.pricePerUnit || ""}
+                        onChange={(e) =>
+                          handleChange("pricePerUnit", e.target.value)
+                        }
+                      />
+                    ) : (
+                      crop.pricePerUnit
+                    )}
+                  </td>
+                  <td>
+                    {isOutOfStock || isPossible ? (
+                      isOutOfStock ? (
+                        <button disabled className="out-of-stock">
+                          {t("table.outOfStock")}
+                        </button>
+                      ) : (
+                        <button disabled className="out-of-stock">
+                          {t("table.late")}
+                        </button>
+                      )
+                    ) : (
+                      <>
+                        {editingCropId === crop._id ? (
+                          <button onClick={() => handleSave(crop._id)}>
+                            {t("table.save")}
+                          </button>
+                        ) : crop.sell === true ? null : (
+                          <button
+                            onClick={() => handleEdit(crop._id)}
+                            className="update"
+                          >
+                            {t("table.update")}
+                          </button>
+                        )}
+                        {crop.sell === true ? (
+                          <button
+                            onClick={() => handleStopSale(crop._id)}
+                            className="on-sale"
+                          >
+                            {t("table.stopSale")}
+                          </button>
+                        ) : editingCropId === crop._id ? null : (
+                          <button
+                            onClick={() => handleSell(crop._id)}
+                            className="on-sale"
+                          >
+                            {t("table.sell")}
+                          </button>
+                        )}
+                        {crop.sell === true ? null : (
+                          <button
+                            onClick={() => handleDelete(crop._id)}
+                            className="on-sale"
+                          >
+                            {t("delete")}
+                          </button>
+                        )}
+                      </>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

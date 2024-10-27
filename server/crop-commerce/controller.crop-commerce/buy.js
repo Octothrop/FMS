@@ -2,20 +2,20 @@ const express = require("express");
 const router = express.Router();
 const Crop = require("../models.crop-commerce/crop");
 const UserModel = require("../models.crop-commerce/user");
-const Transaction = require("../models.crop-commerce/transaction");
 const Order = require("../models.crop-commerce/order");
-
 
 router.post("/buyCrop/:userId/:cropId", async (req, res) => {
   try {
     const { userId, cropId } = req.params;
-    const { quantity } = req.body;
+    const { quantity, extraDay } = req.body;
     const crop = await Crop.findById(cropId);
+    
     if (!crop) {
       return res.status(404).json({ error: "Crop not found" });
     }
 
-    if (crop.quantity < quantity) {
+    const soldQty = crop.soldQty || 0;
+    if (crop.quantity < quantity + soldQty) {
       return res.status(400).json({ error: "Insufficient crop quantity" });
     }
 
@@ -24,45 +24,34 @@ router.post("/buyCrop/:userId/:cropId", async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    if (user.role === "agent" && !cropId) {
-      const { name, variety, harvestDate, unit, pricePerUnit, location } =
-        crop.toObject();
 
-      // agent should update
-      var new_crop = new Crop({
-        name,
-        variety,
-        harvestDate,
-        quantity,
-        unit,
-        pricePerUnit,
-        sellerId: userId,
-        location,
-      });
-
-      await new_crop.save();
-    }
-    await Crop.updateOne({cropId: crop.id}, {quantity: crop.quantity-quantity});
     const amount = crop.pricePerUnit * quantity;
     const cropUser = await UserModel.findById(crop.sellerId);
-    if (!cropUser){
-      return res.status(404).json({message: "Operation can't be performed"});
+    if (!cropUser) {
+      return res.status(404).json({ message: "Operation can't be performed" });
     }
-    if (!user.GinkouAcc){
-      alert("Register you Ginkou account first");
+
+    if (!user.GinkouAcc) {
+      return res.status(400).json({ message: "Register your Ginkou account first" });
     }
     
-    const details = {fromAccount: user.GinkouAcc, toAccount: cropUser.GinkouAcc, amount: amount, mode: "NEFT"};
+
     const order = await new Order({
-      cropId: crop.id,
+      cropId: cropId,
       buyerId: userId,
       quantity,
-      price: crop.pricePerUnit
-    });
+      price: crop.pricePerUnit,
+      extraDay
+    }).save();
 
+    
+    const originalUrl = `http://localhost:3000/buyCrops/${userId}/${order._id}`;
+    const paymentUrl = `http://localhost:3001/ginkou/payment/${userId}/${order._id}?toAccountId=${cropUser.GinkouAcc}&fromAccountId=${user.GinkouAcc}&mode=NETBANKING&amount=${amount}&url=${originalUrl}`;
+    
     res.status(201).json({
       message: "Order created successfully",
-      order, details
+      order,
+      paymentUrl,
     });
   } catch (error) {
     console.log(error);
@@ -70,26 +59,44 @@ router.post("/buyCrop/:userId/:cropId", async (req, res) => {
   }
 });
 
-router.post("/transaction/save", async function(req, res){
-  const {transactionData, orderId} = req.body;
-  try{
-    const transaction = await Transaction.save({
-      transactionId: transactionData.transactionId,
-      orderId,
-      amount: transactionData.amount,
-      fromAccountId: transactionData.fromAccountId,
-      toAccountId: transactionData.toAccountId,
-      mode: transactionData.mode,
-      cardId: transactionData.cardId,
-      time: transactionData.time,
-      createdAt: transactionData.createdAt,
-      updatedAt: transactionData.updatedAt
-   } );
+router.put("/updateOrderStatus/:orderId", async (req, res) => {
+  const { orderId } = req.params;
+  const { pay, transactionId } = req.body;
 
-   res.status(200).json('Transaction sucessfully added', transaction);
-  } catch(error){
-    console.error(error);
-    res.status(500).json({error: 'Internal server error'});
+  try {
+    const order = await Order.findById(orderId);
+    
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    if (pay) {
+      if (order.transactionId !== transactionId) {
+        await Crop.updateOne(
+          { _id: order.cropId },
+          { 
+            $inc: { soldQty: order.quantity /2 },
+            $set: {transactionId}
+          }
+        );
+    
+        order.transactionId = transactionId;
+      }
+      
+      order.status = "completed";
+    } else {
+      order.status = "cancelled";
+    }
+
+    await order.save();
+
+    res.status(200).json({
+      message: "Order status updated successfully",
+      order,
+    });
+  } catch (error) {
+    console.error("Error updating order status:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 

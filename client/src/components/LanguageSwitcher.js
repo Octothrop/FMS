@@ -13,7 +13,6 @@ const LanguageSwitcher = () => {
       <select onChange={changeLanguage} defaultValue="en">
         <option value="en">ENG</option>
         <option value="kn">KAN</option>
-        <option value="jn">JPN</option>
       </select>
     </div>
   );

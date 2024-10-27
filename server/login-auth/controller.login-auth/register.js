@@ -7,13 +7,15 @@ const userModel = require("../models.login-auth/user");
 // Route to handle user registration
 router.post("/register", async (req, res) => {
   try {
-    const { username, password, phoneNumber } = req.body;
+    const { username, password, phoneNumber, GinkouAcc, Role } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = new userModel({
       username,
       password: hashedPassword,
-      phoneNumber
+      phoneNumber,
+      GinkouAcc,
+      Role
     });
     await user.save();
     // await axios.put(`http://localhost:5050/api/service/sendOtp/${username}`);

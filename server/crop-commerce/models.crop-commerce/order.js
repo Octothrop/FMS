@@ -29,6 +29,12 @@ const orderSchema = new Schema({
     enum: ["pending", "completed", "cancelled"],
     default: "pending",
   },
+  transactionId: {
+    type: String
+  },
+  extraDay: {
+    type: Number
+  },
   createdAt: {
     type: Date,
     default: Date.now,

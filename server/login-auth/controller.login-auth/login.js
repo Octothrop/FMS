@@ -19,10 +19,6 @@ router.post('/login', async (req, res) => {
         return res.status(401).send("Incorrect password");
     }
 
-    if (!user.otpVerified) {
-        return res.status(402).send("OTP not verified yet");
-    }
-    
     const token = jwt.sign({ id: user._id, username: user.username }, JWT_SECRET, {
         expiresIn: "1h", // To keep user logged in for max 1hr
     });

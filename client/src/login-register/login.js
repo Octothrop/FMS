@@ -21,7 +21,7 @@ export default function LoginComponent() {
     setSuccess(false);
 
     try {
-      const response = await fetch("http://localhost:5000/api/auth/login", {
+      const response = await fetch("http://localhost:5050/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -33,13 +33,14 @@ export default function LoginComponent() {
       });
 
       if (!response.ok) {
-        console.log(response.json());
+        console.log(await response.json());
         throw new Error(t("invalid_credentials"));
       }
 
       const data = await response.json();
       console.log("Success:", data);
       setSuccess(true);
+      alert('login sucessfull');
       navigate(`/${data.user._id}`);
     } catch (error) {
       setError(true);

@@ -18,12 +18,14 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
 const sellRoutes = require('../controller.crop-commerce/sell');
 const buyRoutes = require('../controller.crop-commerce/buy');
 const updateCropRoutes = require('../controller.crop-commerce/update-crop');
-const cropGetRoutes = require('../controller.crop-commerce/crop-gets')
+const cropGetRoutes = require('../controller.crop-commerce/crop-gets');
+const trackOrderRoutes = require('../controller.crop-commerce/order-track');
 
 app.use('/api/commerce', sellRoutes);
 app.use('/api/commerce', buyRoutes);
 app.use('/api/commerce', updateCropRoutes);
 app.use('/api/commerce', cropGetRoutes);
+app.use("/api", trackOrderRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running at port: ${port}`);

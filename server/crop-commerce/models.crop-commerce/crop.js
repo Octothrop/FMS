@@ -63,6 +63,10 @@ const cropSchema = new Schema({
       required: true,
     },
   },
+  soldQty:{
+    type: Number,
+    default: 0
+  },
   createdAt: {
     type: Date,
     default: Date.now,
