@@ -30,6 +30,7 @@ In Mongoose schema validation, the `props` argument is an object provided to the
 8. `npm install razorpay`
 9. `npm install twilio otp-generator`
 10. `npm install axios` : For async posts on other end points
+11. `npx create-react-app client` : To get basic react outlet
 
 # Git Commands Used
 1. `git init` : adds git to the current dir
@@ -42,6 +43,7 @@ In Mongoose schema validation, the `props` argument is an object provided to the
 8. `git fetch origin` : Detects new branches
 9. `git checkout branch_name` : Changes current to branch_name
 10. `git merge other_branch` : merges two branch
+11. `git config --global http.postBuffer 524288000` : Increase buffer size for push
 
 # Major Issues Faced:
 - Twilio : `RestException [Error]: 'To' number cannot be a Short Code: +91 96066XXXX`

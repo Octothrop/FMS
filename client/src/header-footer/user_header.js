@@ -1,33 +1,39 @@
+import React from "react";
 import "./header.css";
-import { Link, useNavigate  } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "../components/LanguageSwitcher";
 
 export default function UserHeader() {
   const navigate = useNavigate();
-  const { userId } = useParams();
+  const { t } = useTranslation();
+  const { userId} = useParams();
 
-  const handleLogout = () => {
+  const handleLogout = (e) => {
+    e.preventDefault();
     navigate("/");
-    alert('You have sucessfully logged out\n Thank you for choosing us  😊₹');
+    alert("You have successfully logged out\nThank you for your support 😊");
   };
 
   return (
     <div className="main">
       <div className="main-container">
-        <h2>銀行</h2>
+        <h2 className="logo">🌿FMS🌿</h2>
         <div className="links">
-          <Link className="link" to={`/${userId}/USER`}> Home </Link> |
-          <Link className="link" to={`/${userId}/USER`}> Explore </Link> |
-          <Link className="link" to={`/accounts/${userId}`}> Accounts </Link> |
-          <Link className="link" to={`/history/${userId}`}> History </Link> |
-          <Link className="link" to={`/cards/${userId}`}> Cards </Link> |
-          <Link className="link" to="/" onClick={handleLogout}> Logout </Link>
+          | <Link className="link" to={`/${userId}`}> Home </Link> |
+          <Link className="link" to={`/${userId}`}> Explore </Link> |
+          <Link className="link" to={`/manageOrders/${userId}`}> Manage Orders </Link> |
+          <Link className="link" to={`/buyCrops/${userId}`}>
+            Buy Crops
+          </Link> |
+          <Link className="link" to="/" onClick={handleLogout}> Logout </Link> |
+          <div className="language-switcher">
+            <LanguageSwitcher />
+          </div>
         </div>
       </div>
       <marquee className="marquee-block">
-        {" "}
-        ನಿಮ್ಮ ಖಾತೆಯ ಬ್ಯಾಲೆನ್ಸ್ ಯಾವುದೇ ಸಮಯದಲ್ಲಿ, ಎಲ್ಲೆಲ್ಲಿ ನೋಡಿ! 24/7 ನಾವು ನಿಮ್ಮ
-        ನೆರವಿಗೆ ಇರುತ್ತೇವೆ! ಇಂದು ನಮ್ಮ ಡಿಜಿಟಲ್ ಬ್ಯಾಂಕಿಂಗ್ ಕ್ರಾಂತಿಯಲ್ಲಿ ಸೇರಿ!{" "}
+        {t("marquee-text")}
       </marquee>
     </div>
   );

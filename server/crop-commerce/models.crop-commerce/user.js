@@ -25,9 +25,9 @@ const userSchema = new Schema({
       message: (props) => `${props.value} is not a valid phone number!`,
     },
   },
-  KYCReg: {
-    type: Boolean,
-    default: false,
+  GinkouAcc: {
+    type: Number,
+    default: -1
   },
   Role: {
     type: String,

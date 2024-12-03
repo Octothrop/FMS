@@ -19,15 +19,11 @@ router.post('/login', async (req, res) => {
         return res.status(401).send("Incorrect password");
     }
 
-    if (!user.otpVerified) {
-        return res.status(402).send("OTP not verified yet");
-    }
-    
     const token = jwt.sign({ id: user._id, username: user.username }, JWT_SECRET, {
         expiresIn: "1h", // To keep user logged in for max 1hr
     });
 
-    res.status(200).json({ message: `${user.username} logging successful`, token });
+    res.status(200).json({ message: `${user.username} logging successful`, token, user });
 } catch (error) {
     console.error("Error logging in...", error);
     res.status(500).send("Internal server error");

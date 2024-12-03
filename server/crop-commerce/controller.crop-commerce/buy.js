@@ -1,26 +1,21 @@
 const express = require("express");
-const crypto = require("crypto");
-const Razorpay = require("razorpay");
 const router = express.Router();
 const Crop = require("../models.crop-commerce/crop");
 const UserModel = require("../models.crop-commerce/user");
-const Transaction = require("../models.crop-commerce/transaction");
-
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET,
-});
+const Order = require("../models.crop-commerce/order");
 
 router.post("/buyCrop/:userId/:cropId", async (req, res) => {
   try {
     const { userId, cropId } = req.params;
-    const { quantity } = req.body;
+    const { quantity, extraDay } = req.body;
     const crop = await Crop.findById(cropId);
+    
     if (!crop) {
       return res.status(404).json({ error: "Crop not found" });
     }
 
-    if (crop.quantity < quantity) {
+    const soldQty = crop.soldQty || 0;
+    if (crop.quantity < quantity + soldQty) {
       return res.status(400).json({ error: "Insufficient crop quantity" });
     }
 
@@ -29,52 +24,34 @@ router.post("/buyCrop/:userId/:cropId", async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    if (user.role === "agent" && !cropId) {
-      const { name, variety, harvestDate, unit, pricePerUnit, location } =
-        crop.toObject();
 
-      // agent should update
-      var new_crop = new Crop({
-        name,
-        variety,
-        harvestDate,
-        quantity,
-        unit,
-        pricePerUnit,
-        sellerId: userId,
-        location,
-      });
-
-      await new_crop.save();
+    const amount = crop.pricePerUnit * quantity;
+    const cropUser = await UserModel.findById(crop.sellerId);
+    if (!cropUser) {
+      return res.status(404).json({ message: "Operation can't be performed" });
     }
 
-    const amount = crop.pricePerUnit * quantity * 100; // converting to paisa for Razorpay
+    if (!user.GinkouAcc) {
+      return res.status(400).json({ message: "Register your Ginkou account first" });
+    }
+    
 
-    // Razorpay order
-    const options = {
-      amount: amount,
-      currency: "INR",
-      receipt: `order_rcptid_${Math.floor(Math.random() * 1000000)}`,
-    };
-
-    const order = await razorpay.orders.create(options);
-
-    // Save the transaction
-    const transaction = new Transaction({
-      userId: userId,
+    const order = await new Order({
       cropId: cropId,
-      amount: amount / 100,
-      orderId: order.id,
-      status: "pending",
-      razorpayCreatedAt: new Date(order.created_at * 1000),
-    });
+      buyerId: userId,
+      quantity,
+      price: crop.pricePerUnit,
+      extraDay
+    }).save();
 
-    await transaction.save();
-
+    
+    const originalUrl = `http://localhost:3000/buyCrops/${userId}/${order._id}`;
+    const paymentUrl = `http://localhost:3001/ginkou/payment/${userId}/${order._id}?toAccountId=${cropUser.GinkouAcc}&fromAccountId=${user.GinkouAcc}&mode=NETBANKING&amount=${amount}&url=${originalUrl}`;
+    
     res.status(201).json({
       message: "Order created successfully",
-      orderId: order.id,
-      amount: amount / 100,
+      order,
+      paymentUrl,
     });
   } catch (error) {
     console.log(error);
@@ -82,50 +59,44 @@ router.post("/buyCrop/:userId/:cropId", async (req, res) => {
   }
 });
 
-const verifyPaymentSignature = (order_id, payment_id, signature) => {
-  const expectedSignature = crypto
-    .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
-    .update(order_id + "|" + payment_id)
-    .digest("hex");
-  return expectedSignature === signature;
-};
-
-// Payment verification FE
-router.post("/paymentVerification", async (req, res) => {
-  const { order_id, payment_id, signature } = req.body;
-
-  // Verify payment signature
-  if (!verifyPaymentSignature(order_id, payment_id, signature)) {
-    return res.status(400).json({ error: "Invalid payment signature" });
-  }
+router.put("/updateOrderStatus/:orderId", async (req, res) => {
+  const { orderId } = req.params;
+  const { pay, transactionId } = req.body;
 
   try {
-    const pendingTransaction = await Transaction.findOne({
-      orderId: order_id,
-      status: "pending",
+    const order = await Order.findById(orderId);
+    
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    if (pay) {
+      if (order.transactionId !== transactionId) {
+        await Crop.updateOne(
+          { _id: order.cropId },
+          { 
+            $inc: { soldQty: order.quantity /2 },
+            $set: {transactionId}
+          }
+        );
+    
+        order.transactionId = transactionId;
+      }
+      
+      order.status = "completed";
+    } else {
+      order.status = "cancelled";
+    }
+
+    await order.save();
+
+    res.status(200).json({
+      message: "Order status updated successfully",
+      order,
     });
-
-    if (!pendingTransaction) {
-      return res
-        .status(404)
-        .json({ error: "Transaction not found or already processed" });
-    }
-
-    pendingTransaction.paymentId = payment_id;
-    pendingTransaction.status = "completed";
-    await pendingTransaction.save();
-
-    const crop = await Crop.findById(pendingTransaction.cropId);
-    if (crop) {
-      crop.quantity -= pendingTransaction.amount / crop.pricePerUnit;
-      crop.status = crop.quantity <= 0 ? "sold" : "available";
-      await crop.save();
-    }
-
-    res.status(200).json({ message: "Payment successful and crop updated" });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error("Error updating order status:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
